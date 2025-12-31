@@ -10,13 +10,13 @@
 
     :root {
       --bg: #0b1518;
-      --panel: rgba(22, 34, 38, 0.85);
-      --panel-strong: rgba(27, 47, 53, 0.9);
+      --panel: rgba(18, 28, 32, 0.9);
+      --panel-strong: rgba(24, 37, 41, 0.95);
       --border: rgba(255,255,255,0.06);
       --primary: #1f8a4c;
       --primary-strong: #0f6a33;
       --text: #e8f1f4;
-      --muted: #9eb6c1;
+      --muted: #a8bdc7;
       --accent: #f4c542;
       --accent-teal: #39c2c0;
       --shadow: 0 18px 45px rgba(0,0,0,0.35);
@@ -26,54 +26,72 @@
 
     body {
       margin:0;
-      background: radial-gradient(60% 80% at 20% 20%, rgba(55, 122, 90, 0.25), transparent),
-                  radial-gradient(40% 60% at 80% 0%, rgba(57, 194, 192, 0.12), transparent),
-                  linear-gradient(180deg, #0f1a1d 0%, #0a1215 100%);
+      background:
+        radial-gradient(60% 80% at 18% 18%, rgba(55, 122, 90, 0.24), transparent),
+        radial-gradient(45% 60% at 85% -5%, rgba(57, 194, 192, 0.16), transparent),
+        linear-gradient(180deg, #0f1a1d 0%, #091014 100%);
       color: var(--text);
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       padding: 22px;
     }
 
     .page { max-width: 1280px; margin:0 auto; display:flex; flex-direction:column; gap:16px; }
-    .topbar { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; background:var(--panel); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow); backdrop-filter: blur(10px); }
+
+    .topbar { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; background:var(--panel); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow); backdrop-filter: blur(10px); gap:16px; }
     .brand { display:flex; align-items:center; gap:12px; }
     .brand-mark { width:44px; height:44px; border-radius:14px; background:linear-gradient(135deg, #1f8a4c, #0f6a33); display:grid; place-items:center; color:#eafff4; font-weight:700; letter-spacing:1px; box-shadow:0 10px 25px rgba(31,138,76,0.35); }
     .title-group h1 { margin:0; font-size:20px; letter-spacing:0.2px; }
     .title-group .eyebrow { margin:0; font-size:12px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
 
-    .topbar-actions { display:flex; gap:10px; align-items:center; }
+    .topbar-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
     .chip { padding:8px 12px; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,0.04); color:var(--muted); font-weight:600; }
     .chip.success { color:#b4ffd0; border-color: rgba(31,138,76,0.45); background: rgba(31,138,76,0.12); }
     .chip.alert { color:#ffe9ac; border-color: rgba(244,197,66,0.45); background: rgba(244,197,66,0.12); }
+    .chip.secondary { color:#d5e7ef; border-color: rgba(255,255,255,0.07); background: rgba(255,255,255,0.03); }
 
-    .grid { display:grid; grid-template-columns: 2fr 1fr; gap:16px; align-items:start; }
-    .card { background: var(--panel); border:1px solid var(--border); border-radius:18px; padding:14px 16px 16px; box-shadow: var(--shadow); backdrop-filter: blur(10px); }
-    .card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:10px; }
-    .card-title { margin:0; font-size:16px; }
+    .status-led { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:rgba(31,138,76,0.18); border:1px solid rgba(31,138,76,0.45); color:#b4ffd0; font-weight:700; letter-spacing:0.2px; }
+    .status-led .dot { width:10px; height:10px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #eafff4, #1f8a4c); box-shadow:0 0 8px rgba(31,138,76,0.7); }
+
+    .layout { display:grid; grid-template-columns: 2fr 1fr; gap:16px; align-items:start; }
+    .card { background: var(--panel); border:1px solid var(--border); border-radius:18px; padding:16px 16px 18px; box-shadow: var(--shadow); backdrop-filter: blur(10px); }
+    .card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:12px; }
+    .card-title { margin:0; font-size:17px; }
     .subtitle { margin:2px 0 0; color:var(--muted); font-size:13px; }
 
-    .legend { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; }
+    .legend { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-start; }
     .pill { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,0.04); color:var(--text); font-size:12px; }
     .pill strong { color:#fff; }
     .pill.warn { border-color: rgba(244,197,66,0.4); background: rgba(244,197,66,0.08); color: #ffe9ac; }
     .pill.ok { border-color: rgba(31,138,76,0.4); background: rgba(31,138,76,0.08); color: #b4ffd0; }
     .pill.bad { border-color: rgba(255,90,90,0.4); background: rgba(255,90,90,0.08); color: #ffc3c3; }
 
-    .scene { position:relative; width:100%; aspect-ratio: 1200/620; border-radius:16px; overflow:hidden; background: linear-gradient(180deg, #13252b 0%, #0b161a 100%); border:1px solid rgba(255,255,255,0.04); box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 25px 45px rgba(0,0,0,0.45); }
-    .scene::before { content:""; position:absolute; inset:0; background: radial-gradient(60% 80% at 20% 20%, rgba(31,138,76,0.16), transparent), radial-gradient(40% 60% at 85% 0%, rgba(57,194,192,0.14), transparent); pointer-events:none; }
-    #crane { position:absolute; inset:0; width:100%; height:100%; z-index:1; user-select:none; filter: drop-shadow(0 10px 22px rgba(0,0,0,0.45)); }
-    #trolley { position:absolute; z-index:2; width:5%; left:43.3%; top:18%; transform:translateX(-50%); pointer-events:none; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.45)); }
-    #container { position:absolute; z-index:3; width:6.5%; left:43.3%; top:28%; transform:translateX(-50%); pointer-events:none; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)); }
+    .state-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .state-chip { display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border-radius:12px; border:1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--text); font-weight:600; font-size:13px; letter-spacing:0.2px; }
+    .state-chip[data-state="ok"] { border-color: rgba(31,138,76,0.5); background: rgba(31,138,76,0.15); color:#c9ffe2; }
+    .state-chip[data-state="warn"] { border-color: rgba(244,197,66,0.4); background: rgba(244,197,66,0.14); color:#ffe9ac; }
+    .state-chip[data-state="fault"] { border-color: rgba(255,90,90,0.4); background: rgba(255,90,90,0.14); color:#ffc3c3; }
+    .state-chip .dot { width:8px; height:8px; border-radius:50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
 
-    .btnPanel{ position:absolute; z-index:10; right:14px; top:14px; display:flex; flex-direction:column; gap:10px; padding:12px; border-radius:14px; background: rgba(15, 26, 29, 0.72); border:1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.35); backdrop-filter: blur(8px); }
-    .btn{ position:static; width: 150px; padding:11px 12px; font-size:14px; font-weight:600; color: var(--text); border:1px solid rgba(255,255,255,0.08); border-radius:12px; background: linear-gradient(135deg, rgba(31,138,76,0.18), rgba(31,138,76,0.08)); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); cursor:pointer; transition: all 0.18s ease; white-space:nowrap; }
+    .hero-card { padding:18px; }
+
+    .scene { position:relative; width:100%; min-height: clamp(280px, 55vw, 520px); border-radius:18px; overflow:hidden; background: linear-gradient(180deg, #13252b 0%, #0b161a 100%); border:1px solid rgba(255,255,255,0.06); box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 25px 45px rgba(0,0,0,0.45); margin-top:14px; }
+    .scene::before { content:""; position:absolute; inset:-20% -10%; background: radial-gradient(60% 80% at 20% 15%, rgba(31,138,76,0.20), transparent), radial-gradient(50% 60% at 85% 5%, rgba(57,194,192,0.16), transparent); pointer-events:none; }
+    #crane { position:absolute; inset:4% 0 2% 0; width:100%; height:94%; object-fit:contain; z-index:1; user-select:none; filter: drop-shadow(0 10px 22px rgba(0,0,0,0.45)); }
+    #trolley { position:absolute; z-index:2; width:6%; left:42.5%; top:18%; transform:translateX(-50%); pointer-events:none; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.45)); }
+    #container { position:absolute; z-index:3; width:7.5%; left:42.5%; top:28%; transform:translateX(-50%); pointer-events:none; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)); }
+
+    .btnPanel{ position:absolute; z-index:10; right:14px; top:14px; display:flex; flex-direction:column; gap:10px; padding:12px; border-radius:14px; background: rgba(11, 20, 23, 0.8); border:1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.35); backdrop-filter: blur(8px); }
+    .btn{ position:static; width: 160px; padding:11px 12px; font-size:14px; font-weight:700; color: var(--text); border:1px solid rgba(255,255,255,0.08); border-radius:12px; background: linear-gradient(135deg, rgba(31,138,76,0.18), rgba(31,138,76,0.08)); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); cursor:pointer; transition: all 0.18s ease; white-space:nowrap; }
     .btn:hover{ border-color: rgba(57,194,192,0.55); transform: translateY(-1px); }
     .btn.active{ background: linear-gradient(135deg, #1f8a4c, #0f6a33); box-shadow: 0 8px 16px rgba(31,138,76,0.3), inset 0 1px 0 rgba(255,255,255,0.1); border-color: rgba(31,138,76,0.8); }
 
-    .hud { position:absolute; left:16px; bottom:14px; z-index:5; display:flex; flex-wrap:wrap; gap:10px; }
-    .hud .metric { padding:10px 12px; border-radius:12px; background: rgba(0,0,0,0.35); border:1px solid var(--border); min-width:140px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
-    .metric-label { font-size:12px; color:var(--muted); margin-bottom:4px; }
-    .metric-value { font-size:20px; font-weight:700; letter-spacing:0.3px; }
+    .hud { position:absolute; left:14px; bottom:14px; z-index:5; display:flex; flex-wrap:wrap; gap:10px; }
+    .hud .metric { padding:12px 14px; border-radius:12px; background: rgba(0,0,0,0.38); border:1px solid var(--border); min-width:160px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); backdrop-filter: blur(6px); }
+    .metric-label { font-size:12px; color:var(--muted); margin-bottom:4px; text-transform: uppercase; letter-spacing:0.8px; }
+    .metric-value { font-size:21px; font-weight:700; letter-spacing:0.3px; }
+
+    .info-strip { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    .info-strip .pill { background: rgba(255,255,255,0.04); }
 
     .metrics-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:10px; }
     .metric-card { padding:12px; border-radius:12px; background:var(--panel-strong); border:1px solid var(--border); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
@@ -94,15 +112,17 @@
     .mono { font-family: "SFMono-Regular", ui-monospace, "Roboto Mono", Menlo, monospace; }
 
     @media (max-width: 1080px){
-      .grid { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: 1fr; }
+      .topbar { flex-direction:column; align-items:flex-start; }
+      .topbar-actions { width:100%; justify-content:flex-start; }
     }
 
-    @media (max-width: 560px){
+    @media (max-width: 720px){
       body { padding:14px; }
-      .topbar { flex-direction:column; align-items:flex-start; gap:12px; }
-      .legend { justify-content:flex-start; }
+      .scene { min-height: clamp(240px, 60vw, 400px); }
       .btnPanel{ right:10px; top:10px; width: calc(100% - 20px); flex-direction: row; flex-wrap: wrap; justify-content:flex-end; }
       .btn{ flex: 1 1 46%; width:auto; text-align:center; }
+      .hud { position:static; margin-top:10px; }
     }
   </style>
 </head>
@@ -118,23 +138,25 @@
         </div>
       </div>
       <div class="topbar-actions">
+        <div class="status-led"><span class="dot"></span>Connected</div>
         <div class="chip success">Live telemetry</div>
-        <div class="chip alert">High-visibility mode</div>
+        <div class="chip secondary">Crane ID: QC12</div>
+        <div class="chip alert">High-visibility ready</div>
       </div>
     </header>
 
-    <div class="grid">
-      <section class="card">
+    <div class="layout">
+      <section class="card hero-card">
         <div class="card-header">
           <div>
             <p class="eyebrow">Crane visualization</p>
             <h3 class="card-title">PSA green boom, trolley, and hoist</h3>
             <p class="subtitle">Smooth PLC-tracked motion with state-driven color accents.</p>
-          </div>
-          <div class="legend">
-            <span class="pill ok">DALI: <strong id="daliOk">—</strong></span>
-            <span class="pill">PLC level: <strong id="plcLevel">—</strong></span>
-            <span class="pill warn">Light: <strong><span id="plcLight">—</span></strong> (0x<span id="plcLightHex">—</span>)</span>
+            <div class="state-row">
+              <span class="state-chip" data-chip="dali" data-state="ok"><span class="dot"></span>DALI: <strong id="daliOk" data-bind="daliOkText">—</strong></span>
+              <span class="state-chip" data-state="ok">PLC level: <strong id="plcLevel" data-bind="plcLevel">—</strong></span>
+              <span class="state-chip" data-chip="light" data-state="warn">Light: <strong><span id="plcLight" data-bind="plcLight">—</span></strong> (0x<span id="plcLightHex" data-bind="plcLightHex">—</span>)</span>
+            </div>
           </div>
         </div>
 
@@ -145,12 +167,12 @@
 
           <div class="hud">
             <div class="metric">
-              <div class="metric-label">Hoist position (displayed)</div>
-              <div class="metric-value"><span id="dispLevel">—</span></div>
+              <div class="metric-label">Hoist position</div>
+              <div class="metric-value" id="dispLevel" data-bind="dispLevel">—</div>
             </div>
             <div class="metric">
-              <div class="metric-label">Lighting output (displayed)</div>
-              <div class="metric-value"><span id="dispLight">—</span> <small>(0x<span id="dispLightHex">—</span>)</small></div>
+              <div class="metric-label">Lighting output</div>
+              <div class="metric-value"><span id="dispLight" data-bind="dispLight">—</span> <small>(0x<span id="dispLightHex" data-bind="dispLightHex">—</span>)</small></div>
             </div>
           </div>
 
@@ -161,6 +183,12 @@
             <button id="trolleyOn" class="btn" data-group="trolley">Trolley ON</button>
             <button id="trolleyOff" class="btn" data-group="trolley">Trolley OFF</button>
           </div>
+        </div>
+
+        <div class="info-strip">
+          <span class="pill ok">Connected: <strong data-bind="plcLevel">—</strong> PLC level</span>
+          <span class="pill warn">Light output: <strong data-bind="plcLight">—</strong> (0x<span data-bind="plcLightHex">—</span>)</span>
+          <span class="pill">DALI health: <strong data-bind="daliOkText">—</strong></span>
         </div>
       </section>
 
@@ -183,11 +211,11 @@
           </div>
           <div class="metric-card">
             <div class="label">Displayed level</div>
-            <div class="value" id="dispLevel">—</div>
+            <div class="value" data-bind="dispLevel">—</div>
           </div>
           <div class="metric-card">
             <div class="label">Displayed light</div>
-            <div class="value"><span id="dispLight">—</span> (0x<span id="dispLightHex">—</span>)</div>
+            <div class="value"><span data-bind="dispLight">—</span> (0x<span data-bind="dispLightHex">—</span>)</div>
           </div>
         </div>
 
@@ -231,13 +259,19 @@
   const statusBox = document.getElementById("statusBox");
   const boomStateEl = document.getElementById("boomState");
   const trolleyStateEl = document.getElementById("trolleyState");
-  const daliOkEl = document.getElementById("daliOk");
-  const plcLevelEl = document.getElementById("plcLevel");
-  const plcLightEl = document.getElementById("plcLight");
-  const plcLightHexEl = document.getElementById("plcLightHex");
-  const dispLevelEl = document.getElementById("dispLevel");
-  const dispLightEl = document.getElementById("dispLight");
-  const dispLightHexEl = document.getElementById("dispLightHex");
+
+  const bindings = {
+    dispLevel: document.querySelectorAll('[data-bind="dispLevel"]'),
+    dispLight: document.querySelectorAll('[data-bind="dispLight"]'),
+    dispLightHex: document.querySelectorAll('[data-bind="dispLightHex"]'),
+    plcLevel: document.querySelectorAll('[data-bind="plcLevel"]'),
+    plcLight: document.querySelectorAll('[data-bind="plcLight"]'),
+    plcLightHex: document.querySelectorAll('[data-bind="plcLightHex"]'),
+    daliOkText: document.querySelectorAll('[data-bind="daliOkText"]'),
+  };
+
+  const daliChips = document.querySelectorAll('[data-chip="dali"]');
+  const lightChips = document.querySelectorAll('[data-chip="light"]');
 
   const trolleyImg = document.getElementById("trolley");
   const containerImg = document.getElementById("container");
@@ -249,6 +283,12 @@
   function setStatus(msg, isError=false) {
     statusBox.textContent = "status: " + msg;
     statusBox.classList.toggle("bad", !!isError);
+  }
+  function setBound(key, value){
+    (bindings[key] || []).forEach(el => { el.textContent = value; });
+  }
+  function setChipState(nodeList, state){
+    nodeList.forEach(el => { el.dataset.state = state; });
   }
   function clamp254(x){ x=Number(x); if(!Number.isFinite(x)) return null; return Math.max(0,Math.min(254,Math.round(x))); }
   function hex2(v){ return v.toString(16).padStart(2,"0").toUpperCase(); }
@@ -314,7 +354,8 @@
       const s = await res.json();
 
       daliOk = (typeof s.daliOk === "boolean") ? s.daliOk : true;
-      daliOkEl.textContent = daliOk ? "true" : "false";
+      setBound("daliOkText", daliOk ? "true" : "false");
+      setChipState(daliChips, daliOk ? "ok" : "warn");
 
       if (s.boom === "on") { boomStateEl.textContent="ON"; setActive("boom","boomOn"); }
       else if (s.boom === "off") { boomStateEl.textContent="OFF"; setActive("boom","boomOff"); }
@@ -331,9 +372,10 @@
       if(lvl!==null) targetLevel = lvl;
       targetLight = (lit!==null) ? lit : targetLevel;
 
-      plcLevelEl.textContent = String(targetLevel);
-      plcLightEl.textContent = String(targetLight);
-      plcLightHexEl.textContent = hex2(targetLight);
+      setBound("plcLevel", String(targetLevel));
+      setBound("plcLight", String(targetLight));
+      setBound("plcLightHex", hex2(targetLight));
+      setChipState(lightChips, targetLight >= 220 ? "warn" : "ok");
 
       syncControls(targetLevel);
 
@@ -368,9 +410,9 @@
     const dl = clamp254(dispLevel) ?? 0;
     const dL = clamp254(dispLight) ?? 0;
 
-    dispLevelEl.textContent = String(dl);
-    dispLightEl.textContent = String(dL);
-    dispLightHexEl.textContent = hex2(dL);
+    setBound("dispLevel", String(dl));
+    setBound("dispLight", String(dL));
+    setBound("dispLightHex", hex2(dL));
 
     applyVisual(dl);
     requestAnimationFrame(animate);
