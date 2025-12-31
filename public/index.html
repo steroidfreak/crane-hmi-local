@@ -6,121 +6,206 @@
   <title>Crane HMI</title>
 
   <style>
-    body { font-family: Arial, sans-serif; margin: 16px; background:#fafafa; }
-    h2 { margin: 0 0 10px; }
-    .scene { position: relative; width: min(100%, 1100px); aspect-ratio: 1200/600; margin: 0 auto; border:1px solid #ddd; border-radius:12px; overflow:hidden; background:#f5f7fa; }
-    #crane { position:absolute; inset:0; width:100%; height:100%; z-index:1; user-select:none; }
-    #trolley { position:absolute; z-index:2; width:5%; left:43.3%; top:18%; transform:translateX(-50%); pointer-events:none; user-select:none; }
-    #container { position:absolute; z-index:3; width:6.5%; left:43.3%; top:28%; transform:translateX(-50%); pointer-events:none; user-select:none; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-    .btn { position:absolute; z-index:10; padding:8px 12px; font-size:14px; border:none; border-radius:10px; background:rgba(255,255,255,0.92); box-shadow:0 2px 10px rgba(0,0,0,0.12); cursor:pointer; }
-    .btn.active { background:#ffd54f !important; box-shadow:0 0 0 2px #ffb300 inset; font-weight:bold; }
-    /* Button panel stays in the scene */
-.btnPanel{
-  position:absolute;
-  z-index:10;
-  right:14px;
-  top:14px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  padding:10px;
-  border-radius:14px;
-  background: rgba(255,255,255,0.85);
-  box-shadow:0 2px 10px rgba(0,0,0,0.12);
-  backdrop-filter: blur(6px);
-}
+    :root {
+      --bg: #0b1518;
+      --panel: rgba(22, 34, 38, 0.85);
+      --panel-strong: rgba(27, 47, 53, 0.9);
+      --border: rgba(255,255,255,0.06);
+      --primary: #1f8a4c;
+      --primary-strong: #0f6a33;
+      --text: #e8f1f4;
+      --muted: #9eb6c1;
+      --accent: #f4c542;
+      --accent-teal: #39c2c0;
+      --shadow: 0 18px 45px rgba(0,0,0,0.35);
+    }
 
-.btn{
-  position:static;              /* IMPORTANT: stop absolute positioning */
-  width: 140px;
-  padding:10px 12px;
-  font-size:14px;
-  border:none;
-  border-radius:12px;
-  background:rgba(255,255,255,0.92);
-  box-shadow:0 2px 10px rgba(0,0,0,0.12);
-  cursor:pointer;
-  white-space:nowrap;
-}
+    * { box-sizing:border-box; }
 
-.btn.active{
-  background:#ffd54f !important;
-  box-shadow:0 0 0 2px #ffb300 inset;
-  font-weight:bold;
-}
+    body {
+      margin:0;
+      background: radial-gradient(60% 80% at 20% 20%, rgba(55, 122, 90, 0.25), transparent),
+                  radial-gradient(40% 60% at 80% 0%, rgba(57, 194, 192, 0.12), transparent),
+                  linear-gradient(180deg, #0f1a1d 0%, #0a1215 100%);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      padding: 22px;
+    }
 
-/* Small screens: tighter panel + smaller buttons */
-@media (max-width: 520px){
-  .btnPanel{
-    right:8px;
-    top:8px;
-    gap:8px;
-    padding:8px;
-  }
-  .btn{
-    width: 120px;
-    padding:8px 10px;
-    font-size:13px;
-    border-radius:10px;
-  }
-}
+    .page { max-width: 1280px; margin:0 auto; display:flex; flex-direction:column; gap:16px; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; background:var(--panel); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow); backdrop-filter: blur(10px); }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand-mark { width:44px; height:44px; border-radius:14px; background:linear-gradient(135deg, #1f8a4c, #0f6a33); display:grid; place-items:center; color:#eafff4; font-weight:700; letter-spacing:1px; box-shadow:0 10px 25px rgba(31,138,76,0.35); }
+    .title-group h1 { margin:0; font-size:20px; letter-spacing:0.2px; }
+    .title-group .eyebrow { margin:0; font-size:12px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
 
+    .topbar-actions { display:flex; gap:10px; align-items:center; }
+    .chip { padding:8px 12px; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,0.04); color:var(--muted); font-weight:600; }
+    .chip.success { color:#b4ffd0; border-color: rgba(31,138,76,0.45); background: rgba(31,138,76,0.12); }
+    .chip.alert { color:#ffe9ac; border-color: rgba(244,197,66,0.45); background: rgba(244,197,66,0.12); }
 
-    .panel { width:min(100%,1100px); margin:14px auto 0; }
-    .card { background:#fff; border:1px solid #ddd; border-radius:12px; padding:12px; }
-    .row { display:flex; flex-wrap:wrap; gap:16px; align-items:center; }
-    .mono { font-family: ui-monospace, Consolas, monospace; }
+    .grid { display:grid; grid-template-columns: 2fr 1fr; gap:16px; align-items:start; }
+    .card { background: var(--panel); border:1px solid var(--border); border-radius:18px; padding:14px 16px 16px; box-shadow: var(--shadow); backdrop-filter: blur(10px); }
+    .card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:10px; }
+    .card-title { margin:0; font-size:16px; }
+    .subtitle { margin:2px 0 0; color:var(--muted); font-size:13px; }
 
-    .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid #eee; }
-    input[type="range"]{ width:min(520px,100%); }
-    input[type="number"]{ width:90px; padding:6px 8px; border-radius:8px; border:1px solid #ddd; }
-    .pill{ display:inline-block; padding:2px 8px; border-radius:999px; background:#f2f2f2; border:1px solid #e5e5e5; }
-    .status{ margin-top:10px; padding:8px 10px; border-radius:10px; border:1px solid #ddd; background:#fcfcfc; color:#444; }
-    .bad { border-color:#f0b4b4 !important; background:#fff5f5 !important; color:#7a0000 !important; }
+    .legend { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; }
+    .pill { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,0.04); color:var(--text); font-size:12px; }
+    .pill strong { color:#fff; }
+    .pill.warn { border-color: rgba(244,197,66,0.4); background: rgba(244,197,66,0.08); color: #ffe9ac; }
+    .pill.ok { border-color: rgba(31,138,76,0.4); background: rgba(31,138,76,0.08); color: #b4ffd0; }
+    .pill.bad { border-color: rgba(255,90,90,0.4); background: rgba(255,90,90,0.08); color: #ffc3c3; }
+
+    .scene { position:relative; width:100%; aspect-ratio: 1200/620; border-radius:16px; overflow:hidden; background: linear-gradient(180deg, #13252b 0%, #0b161a 100%); border:1px solid rgba(255,255,255,0.04); box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 25px 45px rgba(0,0,0,0.45); }
+    .scene::before { content:""; position:absolute; inset:0; background: radial-gradient(60% 80% at 20% 20%, rgba(31,138,76,0.16), transparent), radial-gradient(40% 60% at 85% 0%, rgba(57,194,192,0.14), transparent); pointer-events:none; }
+    #crane { position:absolute; inset:0; width:100%; height:100%; z-index:1; user-select:none; filter: drop-shadow(0 10px 22px rgba(0,0,0,0.45)); }
+    #trolley { position:absolute; z-index:2; width:5%; left:43.3%; top:18%; transform:translateX(-50%); pointer-events:none; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.45)); }
+    #container { position:absolute; z-index:3; width:6.5%; left:43.3%; top:28%; transform:translateX(-50%); pointer-events:none; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)); }
+
+    .btnPanel{ position:absolute; z-index:10; right:14px; top:14px; display:flex; flex-direction:column; gap:10px; padding:12px; border-radius:14px; background: rgba(15, 26, 29, 0.72); border:1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.35); backdrop-filter: blur(8px); }
+    .btn{ position:static; width: 150px; padding:11px 12px; font-size:14px; font-weight:600; color: var(--text); border:1px solid rgba(255,255,255,0.08); border-radius:12px; background: linear-gradient(135deg, rgba(31,138,76,0.18), rgba(31,138,76,0.08)); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); cursor:pointer; transition: all 0.18s ease; white-space:nowrap; }
+    .btn:hover{ border-color: rgba(57,194,192,0.55); transform: translateY(-1px); }
+    .btn.active{ background: linear-gradient(135deg, #1f8a4c, #0f6a33); box-shadow: 0 8px 16px rgba(31,138,76,0.3), inset 0 1px 0 rgba(255,255,255,0.1); border-color: rgba(31,138,76,0.8); }
+
+    .hud { position:absolute; left:16px; bottom:14px; z-index:5; display:flex; flex-wrap:wrap; gap:10px; }
+    .hud .metric { padding:10px 12px; border-radius:12px; background: rgba(0,0,0,0.35); border:1px solid var(--border); min-width:140px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+    .metric-label { font-size:12px; color:var(--muted); margin-bottom:4px; }
+    .metric-value { font-size:20px; font-weight:700; letter-spacing:0.3px; }
+
+    .metrics-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:10px; }
+    .metric-card { padding:12px; border-radius:12px; background:var(--panel-strong); border:1px solid var(--border); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+    .metric-card .label { font-size:12px; color:var(--muted); text-transform: uppercase; letter-spacing:0.8px; }
+    .metric-card .value { font-size:22px; font-weight:700; }
+
+    .controls { display:flex; flex-direction:column; gap:10px; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); }
+    .control-row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+    input[type="range"]{ width:100%; accent-color: var(--primary); }
+    input[type="number"]{ width:96px; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:var(--text); }
+    input[type="number"]:focus { outline:2px solid rgba(57,194,192,0.4); }
+    .primary-btn { padding:11px 14px; border-radius:12px; border:none; background: linear-gradient(135deg, #1f8a4c, #0f6a33); color:#eafff4; font-weight:700; cursor:pointer; box-shadow: 0 10px 18px rgba(31,138,76,0.35); }
+    .primary-btn:hover { transform: translateY(-1px); }
+
+    .status{ margin-top:12px; padding:12px 14px; border-radius:12px; border:1px solid rgba(244,197,66,0.3); background: rgba(244,197,66,0.08); color: #ffe9ac; font-weight:600; }
+    .status.bad { border-color: rgba(255,90,90,0.35); background: rgba(255,90,90,0.08); color: #ffc3c3; }
+
+    .mono { font-family: "SFMono-Regular", ui-monospace, "Roboto Mono", Menlo, monospace; }
+
+    @media (max-width: 1080px){
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px){
+      body { padding:14px; }
+      .topbar { flex-direction:column; align-items:flex-start; gap:12px; }
+      .legend { justify-content:flex-start; }
+      .btnPanel{ right:10px; top:10px; width: calc(100% - 20px); flex-direction: row; flex-wrap: wrap; justify-content:flex-end; }
+      .btn{ flex: 1 1 46%; width:auto; text-align:center; }
+    }
   </style>
 </head>
 
 <body>
-  <h2>Crane HMI (matches PLC + freezes if DALI stalled)</h2>
-
-  <div class="scene">
-    <img id="crane" src="crane.svg" alt="crane">
-    <img id="trolley" src="trolley.svg" alt="trolley">
-    <img id="container" src="container.svg" alt="container">
-
-    <div class="btnPanel">
-  <button id="boomOn" class="btn" data-group="boom">Boom ON</button>
-  <button id="boomOff" class="btn" data-group="boom">Boom OFF</button>
-
-  <button id="trolleyOn" class="btn" data-group="trolley">Trolley ON</button>
-  <button id="trolleyOff" class="btn" data-group="trolley">Trolley OFF</button>
-</div>
-
-  </div>
-
-  <div class="panel">
-    <div class="card">
-      <div class="row mono">
-        <div>Boom: <span id="boomState">unknown</span></div>
-        <div>Trolley: <span id="trolleyState">unknown</span></div>
-        <div class="pill">daliOk: <b><span id="daliOk">—</span></b></div>
-
-        <div class="pill">PLC level: <b><span id="plcLevel">—</span></b></div>
-        <div class="pill">PLC light: <b><span id="plcLight">—</span></b> (0x<span id="plcLightHex">—</span>)</div>
-
-        <div class="pill">Displayed level: <b><span id="dispLevel">—</span></b></div>
-        <div class="pill">Displayed light: <b><span id="dispLight">—</span></b> (0x<span id="dispLightHex">—</span>)</div>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">PSA</div>
+        <div class="title-group">
+          <p class="eyebrow">Quay Crane HMI</p>
+          <h1>QC12 | Ship-to-Shore Control</h1>
+        </div>
       </div>
-
-      <div class="controls">
-        <div><b>Manual trolley slide</b></div>
-        <input id="trolleySlider" type="range" min="0" max="254" step="1" value="0" />
-        <input id="trolleyNumber" type="number" min="0" max="254" step="1" value="0" />
-        <button id="sendBtn" style="padding:8px 12px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer;">Send</button>
+      <div class="topbar-actions">
+        <div class="chip success">Live telemetry</div>
+        <div class="chip alert">High-visibility mode</div>
       </div>
+    </header>
 
-      <div class="status mono" id="statusBox">status: ready</div>
+    <div class="grid">
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">Crane visualization</p>
+            <h3 class="card-title">PSA green boom, trolley, and hoist</h3>
+            <p class="subtitle">Smooth PLC-tracked motion with state-driven color accents.</p>
+          </div>
+          <div class="legend">
+            <span class="pill ok">DALI: <strong id="daliOk">—</strong></span>
+            <span class="pill">PLC level: <strong id="plcLevel">—</strong></span>
+            <span class="pill warn">Light: <strong><span id="plcLight">—</span></strong> (0x<span id="plcLightHex">—</span>)</span>
+          </div>
+        </div>
+
+        <div class="scene">
+          <img id="crane" src="crane.svg" alt="crane">
+          <img id="trolley" src="trolley.svg" alt="trolley">
+          <img id="container" src="container.svg" alt="container">
+
+          <div class="hud">
+            <div class="metric">
+              <div class="metric-label">Hoist position (displayed)</div>
+              <div class="metric-value"><span id="dispLevel">—</span></div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Lighting output (displayed)</div>
+              <div class="metric-value"><span id="dispLight">—</span> <small>(0x<span id="dispLightHex">—</span>)</small></div>
+            </div>
+          </div>
+
+          <div class="btnPanel">
+            <button id="boomOn" class="btn" data-group="boom">Boom ON</button>
+            <button id="boomOff" class="btn" data-group="boom">Boom OFF</button>
+
+            <button id="trolleyOn" class="btn" data-group="trolley">Trolley ON</button>
+            <button id="trolleyOff" class="btn" data-group="trolley">Trolley OFF</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">Operations panel</p>
+            <h3 class="card-title">Status, setpoints, and manual trim</h3>
+          </div>
+        </div>
+
+        <div class="metrics-grid mono">
+          <div class="metric-card">
+            <div class="label">Boom state</div>
+            <div class="value" id="boomState">unknown</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Trolley state</div>
+            <div class="value" id="trolleyState">unknown</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Displayed level</div>
+            <div class="value" id="dispLevel">—</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Displayed light</div>
+            <div class="value"><span id="dispLight">—</span> (0x<span id="dispLightHex">—</span>)</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="control-row" style="width:100%">
+            <div style="flex:1">
+              <div class="label mono" style="font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px;">Manual trolley slide</div>
+              <input id="trolleySlider" type="range" min="0" max="254" step="1" value="0" />
+            </div>
+          </div>
+          <div class="control-row">
+            <input id="trolleyNumber" type="number" min="0" max="254" step="1" value="0" />
+            <button id="sendBtn" class="primary-btn">Send setpoint</button>
+          </div>
+        </div>
+
+        <div class="status mono" id="statusBox">status: ready</div>
+      </section>
     </div>
   </div>
 
