@@ -1,0 +1,299 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crane HMI</title>
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 16px; background:#fafafa; }
+    h2 { margin: 0 0 10px; }
+    .scene { position: relative; width: min(100%, 1100px); aspect-ratio: 1200/600; margin: 0 auto; border:1px solid #ddd; border-radius:12px; overflow:hidden; background:#f5f7fa; }
+    #crane { position:absolute; inset:0; width:100%; height:100%; z-index:1; user-select:none; }
+    #trolley { position:absolute; z-index:2; width:5%; left:43.3%; top:18%; transform:translateX(-50%); pointer-events:none; user-select:none; }
+    #container { position:absolute; z-index:3; width:6.5%; left:43.3%; top:28%; transform:translateX(-50%); pointer-events:none; user-select:none; }
+
+    .btn { position:absolute; z-index:10; padding:8px 12px; font-size:14px; border:none; border-radius:10px; background:rgba(255,255,255,0.92); box-shadow:0 2px 10px rgba(0,0,0,0.12); cursor:pointer; }
+    .btn.active { background:#ffd54f !important; box-shadow:0 0 0 2px #ffb300 inset; font-weight:bold; }
+    /* Button panel stays in the scene */
+.btnPanel{
+  position:absolute;
+  z-index:10;
+  right:14px;
+  top:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:10px;
+  border-radius:14px;
+  background: rgba(255,255,255,0.85);
+  box-shadow:0 2px 10px rgba(0,0,0,0.12);
+  backdrop-filter: blur(6px);
+}
+
+.btn{
+  position:static;              /* IMPORTANT: stop absolute positioning */
+  width: 140px;
+  padding:10px 12px;
+  font-size:14px;
+  border:none;
+  border-radius:12px;
+  background:rgba(255,255,255,0.92);
+  box-shadow:0 2px 10px rgba(0,0,0,0.12);
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.btn.active{
+  background:#ffd54f !important;
+  box-shadow:0 0 0 2px #ffb300 inset;
+  font-weight:bold;
+}
+
+/* Small screens: tighter panel + smaller buttons */
+@media (max-width: 520px){
+  .btnPanel{
+    right:8px;
+    top:8px;
+    gap:8px;
+    padding:8px;
+  }
+  .btn{
+    width: 120px;
+    padding:8px 10px;
+    font-size:13px;
+    border-radius:10px;
+  }
+}
+
+
+    .panel { width:min(100%,1100px); margin:14px auto 0; }
+    .card { background:#fff; border:1px solid #ddd; border-radius:12px; padding:12px; }
+    .row { display:flex; flex-wrap:wrap; gap:16px; align-items:center; }
+    .mono { font-family: ui-monospace, Consolas, monospace; }
+
+    .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid #eee; }
+    input[type="range"]{ width:min(520px,100%); }
+    input[type="number"]{ width:90px; padding:6px 8px; border-radius:8px; border:1px solid #ddd; }
+    .pill{ display:inline-block; padding:2px 8px; border-radius:999px; background:#f2f2f2; border:1px solid #e5e5e5; }
+    .status{ margin-top:10px; padding:8px 10px; border-radius:10px; border:1px solid #ddd; background:#fcfcfc; color:#444; }
+    .bad { border-color:#f0b4b4 !important; background:#fff5f5 !important; color:#7a0000 !important; }
+  </style>
+</head>
+
+<body>
+  <h2>Crane HMI (matches PLC + freezes if DALI stalled)</h2>
+
+  <div class="scene">
+    <img id="crane" src="crane.svg" alt="crane">
+    <img id="trolley" src="trolley.svg" alt="trolley">
+    <img id="container" src="container.svg" alt="container">
+
+    <div class="btnPanel">
+  <button id="boomOn" class="btn" data-group="boom">Boom ON</button>
+  <button id="boomOff" class="btn" data-group="boom">Boom OFF</button>
+
+  <button id="trolleyOn" class="btn" data-group="trolley">Trolley ON</button>
+  <button id="trolleyOff" class="btn" data-group="trolley">Trolley OFF</button>
+</div>
+
+  </div>
+
+  <div class="panel">
+    <div class="card">
+      <div class="row mono">
+        <div>Boom: <span id="boomState">unknown</span></div>
+        <div>Trolley: <span id="trolleyState">unknown</span></div>
+        <div class="pill">daliOk: <b><span id="daliOk">—</span></b></div>
+
+        <div class="pill">PLC level: <b><span id="plcLevel">—</span></b></div>
+        <div class="pill">PLC light: <b><span id="plcLight">—</span></b> (0x<span id="plcLightHex">—</span>)</div>
+
+        <div class="pill">Displayed level: <b><span id="dispLevel">—</span></b></div>
+        <div class="pill">Displayed light: <b><span id="dispLight">—</span></b> (0x<span id="dispLightHex">—</span>)</div>
+      </div>
+
+      <div class="controls">
+        <div><b>Manual trolley slide</b></div>
+        <input id="trolleySlider" type="range" min="0" max="254" step="1" value="0" />
+        <input id="trolleyNumber" type="number" min="0" max="254" step="1" value="0" />
+        <button id="sendBtn" style="padding:8px 12px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer;">Send</button>
+      </div>
+
+      <div class="status mono" id="statusBox">status: ready</div>
+    </div>
+  </div>
+
+<script>
+  const API = {
+    STATE: "/api/state",
+    BOOM_ON: "/api/boom/on",
+    BOOM_OFF: "/api/boom/off",
+    TROLLEY_ON: "/api/trolley/on",
+    TROLLEY_OFF: "/api/trolley/off",
+    TROLLEY_LEVEL: "/api/trolley/level",
+    LIGHT_LEVEL: "/api/light",
+  };
+
+  const TOP_PCT = 18;
+  const BOT_PCT = 62;
+  const CONTAINER_OFFSET_PCT = 10;
+
+  // slow view
+  const DISPLAY_UNITS_PER_SEC = 8;  // smaller = slower
+  const POLL_MS = 250;
+
+  const statusBox = document.getElementById("statusBox");
+  const boomStateEl = document.getElementById("boomState");
+  const trolleyStateEl = document.getElementById("trolleyState");
+  const daliOkEl = document.getElementById("daliOk");
+  const plcLevelEl = document.getElementById("plcLevel");
+  const plcLightEl = document.getElementById("plcLight");
+  const plcLightHexEl = document.getElementById("plcLightHex");
+  const dispLevelEl = document.getElementById("dispLevel");
+  const dispLightEl = document.getElementById("dispLight");
+  const dispLightHexEl = document.getElementById("dispLightHex");
+
+  const trolleyImg = document.getElementById("trolley");
+  const containerImg = document.getElementById("container");
+
+  const slider = document.getElementById("trolleySlider");
+  const numberBox = document.getElementById("trolleyNumber");
+  const sendBtn = document.getElementById("sendBtn");
+
+  function setStatus(msg, isError=false) {
+    statusBox.textContent = "status: " + msg;
+    statusBox.classList.toggle("bad", !!isError);
+  }
+  function clamp254(x){ x=Number(x); if(!Number.isFinite(x)) return null; return Math.max(0,Math.min(254,Math.round(x))); }
+  function hex2(v){ return v.toString(16).padStart(2,"0").toUpperCase(); }
+
+  async function postNoBody(path){
+    const res = await fetch(path,{method:"POST"});
+    if(!res.ok){ const t=await res.text().catch(()=> ""); throw new Error(`POST ${path} ${res.status} ${res.statusText} ${t}`.trim());}
+  }
+  async function postJson(path, body){
+    const res = await fetch(path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
+    if(!res.ok){ const t=await res.text().catch(()=> ""); throw new Error(`POST ${path} ${res.status} ${res.statusText} ${t}`.trim());}
+  }
+
+  function setActive(group,id){
+    document.querySelectorAll(`.btn[data-group="${group}"]`).forEach(b=>b.classList.remove("active"));
+    const el=document.getElementById(id); if(el) el.classList.add("active");
+  }
+
+  document.getElementById("boomOn").onclick = () => postNoBody(API.BOOM_ON).catch(e=>setStatus(e.message,true));
+  document.getElementById("boomOff").onclick = () => postNoBody(API.BOOM_OFF).catch(e=>setStatus(e.message,true));
+  document.getElementById("trolleyOn").onclick = () => postNoBody(API.TROLLEY_ON).catch(e=>setStatus(e.message,true));
+  document.getElementById("trolleyOff").onclick = () => postNoBody(API.TROLLEY_OFF).catch(e=>setStatus(e.message,true));
+
+  function levelToTopPct(level254){
+    const p = level254/254;
+    return TOP_PCT + p*(BOT_PCT-TOP_PCT);
+  }
+  function applyVisual(level254){
+    const topPct = levelToTopPct(level254);
+    trolleyImg.style.top = `${topPct}%`;
+    containerImg.style.top = `${topPct + CONTAINER_OFFSET_PCT}%`;
+  }
+
+  function syncControls(v){ slider.value=String(v); numberBox.value=String(v); }
+  slider.addEventListener("input", ()=>{ const v=clamp254(slider.value); if(v===null) return; numberBox.value=String(v); });
+  numberBox.addEventListener("input", ()=>{ const v=clamp254(numberBox.value); if(v===null) return; slider.value=String(v); });
+
+  sendBtn.onclick = async () => {
+    const v = clamp254(numberBox.value) ?? 0;
+    try{
+      setStatus(`sending manual level ${v}...`);
+      await postJson(API.TROLLEY_LEVEL,{level254:v});
+      await postJson(API.LIGHT_LEVEL,{level254:v});
+      setStatus(`OK manual=${v}`);
+    }catch(e){
+      setStatus(e.message||"send failed",true);
+    }
+  };
+
+  // PLC targets
+  let targetLevel = 0;
+  let targetLight = 0;
+  let daliOk = true;
+
+  // displayed (slow)
+  let dispLevel = 0;
+  let dispLight = 0;
+
+  async function refreshState(){
+    try{
+      const res = await fetch(API.STATE,{cache:"no-store"});
+      if(!res.ok) throw new Error(`GET ${API.STATE} ${res.status} ${res.statusText}`);
+      const s = await res.json();
+
+      daliOk = (typeof s.daliOk === "boolean") ? s.daliOk : true;
+      daliOkEl.textContent = daliOk ? "true" : "false";
+
+      if (s.boom === "on") { boomStateEl.textContent="ON"; setActive("boom","boomOn"); }
+      else if (s.boom === "off") { boomStateEl.textContent="OFF"; setActive("boom","boomOff"); }
+      else boomStateEl.textContent="unknown";
+
+      if (s.trolley === "on") { trolleyStateEl.textContent="ON"; setActive("trolley","trolleyOn"); }
+      else if (s.trolley === "off") { trolleyStateEl.textContent="OFF"; setActive("trolley","trolleyOff"); }
+      else trolleyStateEl.textContent="unknown";
+
+      const lvl = clamp254(s.trolleyLevel254);
+      const lit = clamp254(s.lightLevel254);
+
+      // targets from PLC
+      if(lvl!==null) targetLevel = lvl;
+      targetLight = (lit!==null) ? lit : targetLevel;
+
+      plcLevelEl.textContent = String(targetLevel);
+      plcLightEl.textContent = String(targetLight);
+      plcLightHexEl.textContent = hex2(targetLight);
+
+      syncControls(targetLevel);
+
+      if (!daliOk) setStatus("DALI stalled (PLC froze level). UI frozen to match output.", true);
+      else setStatus("ready");
+    }catch(e){
+      setStatus(e.message||"state fetch failed",true);
+    }
+  }
+
+  let lastTs = performance.now();
+  function animate(now){
+    const dt = Math.max(0,(now-lastTs)/1000);
+    lastTs = now;
+
+    // Freeze visuals if PLC says DALI is stalled
+    if (!daliOk) {
+      const dl = clamp254(dispLevel) ?? 0;
+      applyVisual(dl);
+      requestAnimationFrame(animate);
+      return;
+    }
+
+    const step = DISPLAY_UNITS_PER_SEC*dt;
+
+    let diff = targetLevel - dispLevel;
+    dispLevel = (Math.abs(diff)<=step) ? targetLevel : (dispLevel + Math.sign(diff)*step);
+
+    diff = targetLight - dispLight;
+    dispLight = (Math.abs(diff)<=step) ? targetLight : (dispLight + Math.sign(diff)*step);
+
+    const dl = clamp254(dispLevel) ?? 0;
+    const dL = clamp254(dispLight) ?? 0;
+
+    dispLevelEl.textContent = String(dl);
+    dispLightEl.textContent = String(dL);
+    dispLightHexEl.textContent = hex2(dL);
+
+    applyVisual(dl);
+    requestAnimationFrame(animate);
+  }
+
+  refreshState();
+  setInterval(refreshState, POLL_MS);
+  requestAnimationFrame(animate);
+</script>
+</body>
+</html>
