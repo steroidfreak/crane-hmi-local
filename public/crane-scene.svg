@@ -1,0 +1,13 @@
+<svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+  <g id="crane">
+    <!-- crane paths -->
+  </g>
+
+  <g id="trolley">
+    <!-- trolley paths -->
+  </g>
+
+  <g id="container">
+    <!-- container paths -->
+  </g>
+</svg>

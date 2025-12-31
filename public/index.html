@@ -17,8 +17,6 @@
       --primary-strong: #1aa176;
       --text: #eef6f2;
       --muted: #b7c7d0;
-      --accent: #6dd6ff;
-      --accent-teal: #4bc3c8;
       --shadow: 0 20px 50px rgba(0,0,0,0.4);
     }
 
@@ -37,9 +35,25 @@
 
     .page { max-width: 1280px; margin:0 auto; display:flex; flex-direction:column; gap:16px; width:100%; }
 
-    .topbar { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; background:var(--panel); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow); backdrop-filter: blur(10px); gap:16px; }
+    .topbar {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:16px 20px;
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      gap:16px;
+    }
+
     .brand { display:flex; align-items:center; gap:12px; }
-    .brand-mark { width:44px; height:44px; border-radius:14px; background:linear-gradient(135deg, #1f8a4c, #0f6a33); display:grid; place-items:center; color:#eafff4; font-weight:700; letter-spacing:1px; box-shadow:0 10px 25px rgba(31,138,76,0.35); }
+    .brand-mark {
+      width:44px; height:44px; border-radius:14px;
+      background:linear-gradient(135deg, #1f8a4c, #0f6a33);
+      display:grid; place-items:center;
+      color:#eafff4; font-weight:700; letter-spacing:1px;
+      box-shadow:0 10px 25px rgba(31,138,76,0.35);
+    }
     .title-group h1 { margin:0; font-size:20px; letter-spacing:0.2px; }
     .title-group .eyebrow { margin:0; font-size:12px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
 
@@ -49,24 +63,45 @@
     .chip.alert { color:#ffe9ac; border-color: rgba(244,197,66,0.45); background: rgba(244,197,66,0.12); }
     .chip.secondary { color:#d5e7ef; border-color: rgba(255,255,255,0.07); background: rgba(255,255,255,0.03); }
 
-    .status-led { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:rgba(31,138,76,0.18); border:1px solid rgba(31,138,76,0.45); color:#b4ffd0; font-weight:700; letter-spacing:0.2px; }
-    .status-led .dot { width:10px; height:10px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #eafff4, #1f8a4c); box-shadow:0 0 8px rgba(31,138,76,0.7); }
+    .status-led {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background:rgba(31,138,76,0.18);
+      border:1px solid rgba(31,138,76,0.45);
+      color:#b4ffd0; font-weight:700; letter-spacing:0.2px;
+    }
+    .status-led .dot {
+      width:10px; height:10px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #eafff4, #1f8a4c);
+      box-shadow:0 0 8px rgba(31,138,76,0.7);
+    }
 
     .layout { display:grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap:16px; align-items:start; width:100%; }
-    .card { background: var(--panel); border:1px solid var(--border); border-radius:18px; padding:16px 16px 18px; box-shadow: var(--shadow); backdrop-filter: blur(10px); width:100%; }
+
+    .card {
+      background: var(--panel);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:16px 16px 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      width:100%;
+    }
+
     .card-header { display:flex; flex-direction:column; align-items:flex-start; gap:12px; margin-bottom:12px; }
     .card-title { margin:0; font-size:17px; }
     .subtitle { margin:2px 0 0; color:var(--muted); font-size:13px; }
 
-    .legend { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-start; }
-    .pill { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,0.04); color:var(--text); font-size:12px; }
-    .pill strong { color:#fff; }
-    .pill.warn { border-color: rgba(244,197,66,0.4); background: rgba(244,197,66,0.08); color: #ffe9ac; }
-    .pill.ok { border-color: rgba(31,138,76,0.4); background: rgba(31,138,76,0.08); color: #b4ffd0; }
-    .pill.bad { border-color: rgba(255,90,90,0.4); background: rgba(255,90,90,0.08); color: #ffc3c3; }
-
     .state-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-    .state-chip { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--text); font-weight:600; font-size:13px; letter-spacing:0.2px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
+    .state-chip {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 14px; border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-weight:600; font-size:13px; letter-spacing:0.2px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
     .state-chip[data-state="ok"] { border-color: rgba(51,214,159,0.35); background: rgba(51,214,159,0.08); color:#d5ffe8; }
     .state-chip[data-state="warn"] { border-color: rgba(244,197,66,0.4); background: rgba(244,197,66,0.12); color:#ffe8b8; }
     .state-chip[data-state="fault"] { border-color: rgba(255,90,90,0.4); background: rgba(255,90,90,0.12); color:#ffc3c3; }
@@ -75,27 +110,86 @@
     .hero-card { padding:18px; display:flex; flex-direction:column; gap:14px; }
     .hero-card > .card-header { margin-bottom:0; }
 
-    .scene { position:relative; width:100%; min-height: clamp(280px, 55vw, 520px); border-radius:18px; overflow:hidden; background: linear-gradient(180deg, #16252d 0%, #0c1419 100%); border:1px solid rgba(255,255,255,0.06); box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 25px 45px rgba(0,0,0,0.45); margin-top:14px; padding:16px; padding-bottom:132px; isolation:isolate; }
-    .scene::before { content:""; position:absolute; inset:-20% -10%; background: radial-gradient(60% 80% at 20% 15%, rgba(75,195,200,0.15), transparent), radial-gradient(50% 60% at 85% 5%, rgba(109,214,255,0.16), transparent); pointer-events:none; }
-    #crane { position:absolute; inset:4% 0 2% 0; width:100%; height:94%; object-fit:contain; z-index:1; user-select:none; filter: drop-shadow(0 10px 22px rgba(0,0,0,0.45)); pointer-events:none; }
-    #trolley { position:absolute; z-index:2; width:6%; left:42.5%; top:18%; transform:translateX(-50%); pointer-events:none; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.45)); }
-    #container { position:absolute; z-index:3; width:7.5%; left:42.5%; top:28%; transform:translateX(-50%); pointer-events:none; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)); }
+    /* IMPORTANT: .scene is now a stable coordinate system (NO padding shifts) */
+    .scene {
+      position:relative;
+      width:100%;
+      min-height: clamp(280px, 55vw, 520px);
+      border-radius:18px;
+      overflow:hidden;
+      background: linear-gradient(180deg, #16252d 0%, #0c1419 100%);
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 25px 45px rgba(0,0,0,0.45);
+      isolation:isolate;
+      padding:0; /* key */
+    }
 
-    .control-toolbar { width:100%; display:flex; flex-wrap:wrap; gap:12px; padding:12px; border-radius:14px; background: var(--panel-strong); border:1px solid var(--border); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+    /* SVG stage covers full scene */
+    .scene-stage{
+      position:absolute;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
+      filter: drop-shadow(0 10px 22px rgba(0,0,0,0.45));
+    }
+    .scene-stage svg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      display:block;
+    }
+
+    .control-toolbar {
+      width:100%;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      padding:12px;
+      border-radius:14px;
+      background: var(--panel-strong);
+      border:1px solid var(--border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
     .control-group { display:flex; flex-direction:column; gap:8px; min-width:220px; flex:1 1 240px; }
     .control-label { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; font-weight:700; }
     .control-buttons { display:flex; gap:10px; flex-wrap:wrap; }
-    .btn{ position:static; min-width: 120px; padding:12px 14px; font-size:14px; font-weight:700; color: var(--text); border:1px solid rgba(255,255,255,0.08); border-radius:12px; background: linear-gradient(135deg, rgba(75,195,200,0.14), rgba(109,214,255,0.08)); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); cursor:pointer; transition: all 0.18s ease; white-space:nowrap; }
+
+    .btn{
+      min-width: 120px;
+      padding:12px 14px;
+      font-size:14px;
+      font-weight:700;
+      color: var(--text);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(75,195,200,0.14), rgba(109,214,255,0.08));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+      cursor:pointer;
+      transition: all 0.18s ease;
+      white-space:nowrap;
+    }
     .btn:hover{ border-color: rgba(109,214,255,0.65); transform: translateY(-1px); box-shadow: 0 10px 20px rgba(0,0,0,0.28); }
     .btn.active{ background: linear-gradient(135deg, var(--primary), var(--primary-strong)); box-shadow: 0 8px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.08); border-color: rgba(51,214,159,0.7); }
 
-    .hud { position:absolute; left:16px; right:16px; bottom:16px; z-index:5; display:grid; gap:10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    /* HUD sits above SVG */
+    .hud {
+      position:absolute;
+      left:16px; right:16px; bottom:16px;
+      z-index:5;
+      display:grid;
+      gap:10px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
     .hud .metric { padding:12px 14px; border-radius:12px; background: rgba(0,0,0,0.48); border:1px solid var(--border); min-width:0; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); backdrop-filter: blur(6px); }
     .metric-label { font-size:12px; color:var(--muted); margin-bottom:4px; text-transform: uppercase; letter-spacing:0.8px; }
     .metric-value { font-size:21px; font-weight:700; letter-spacing:0.3px; }
 
     .info-strip { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
-    .info-strip .pill { background: rgba(255,255,255,0.04); }
+    .pill { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,0.04); color:var(--text); font-size:12px; }
+    .pill strong { color:#fff; }
+    .pill.warn { border-color: rgba(244,197,66,0.4); background: rgba(244,197,66,0.08); color: #ffe9ac; }
+    .pill.ok { border-color: rgba(31,138,76,0.4); background: rgba(31,138,76,0.08); color: #b4ffd0; }
 
     .metrics-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:10px; }
     .metric-card { padding:12px; border-radius:12px; background:var(--panel-strong); border:1px solid var(--border); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
@@ -112,8 +206,11 @@
 
     .status{ margin-top:12px; padding:12px 14px; border-radius:12px; border:1px solid rgba(244,197,66,0.3); background: rgba(244,197,66,0.08); color: #ffe9ac; font-weight:600; }
     .status.bad { border-color: rgba(255,90,90,0.35); background: rgba(255,90,90,0.08); color: #ffc3c3; }
-
     .mono { font-family: "SFMono-Regular", ui-monospace, "Roboto Mono", Menlo, monospace; }
+
+    /* =========================
+       RESPONSIVE (VERTICAL PRIORITY)
+       ========================= */
 
     @media (max-width: 1200px){
       .layout { grid-template-columns: 1fr; }
@@ -129,10 +226,10 @@
       .btn { min-width:108px; padding:10px 12px; font-size:13px; border-radius:10px; }
     }
 
+    /* Stack groups vertically + REMOVE empty stretching gap */
     @media (max-width: 900px){
-      .scene { min-height: clamp(260px, 65vw, 460px); padding-bottom: 120px; }
       .control-toolbar { flex-direction:column; }
-      .control-group { width:100%; min-width:0; }
+      .control-group{ width:100%; min-width:0; flex: 0 0 auto; } /* key fix */
     }
 
     @media (max-width: 720px){
@@ -142,10 +239,33 @@
       .hero-card > .scene { order:1; }
       .hero-card > .control-toolbar { order:2; padding:10px; }
       .hero-card > .info-strip { order:3; }
-      .scene { min-height: clamp(240px, 70vw, 420px); padding:12px; padding-bottom:16px; }
+
+      .scene { min-height: clamp(240px, 70vw, 420px); }
+
       .control-group { min-width:100%; }
-      .btn{ flex: 1 1 48%; text-align:center; min-width:0; padding:9px 12px; font-size:13px; }
-      .hud { position:relative; inset:auto; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+
+      /* default: 2 buttons per row if space exists */
+      .btn{
+        flex: 1 1 48%;
+        text-align:center;
+        min-width:0;
+        padding:9px 12px;
+        font-size:13px;
+      }
+
+      .hud { left:12px; right:12px; bottom:12px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+    }
+
+    /* PORTRAIT PRIORITY: single-column buttons in portrait */
+    @media (max-width: 900px) and (orientation: portrait){
+      .control-buttons{ flex-direction:column; }
+      .btn{ flex: 1 1 100%; width:100%; }
+    }
+
+    /* EXTRA SMALL: always single column */
+    @media (max-width: 480px){
+      .control-buttons{ flex-direction:column; }
+      .btn{ flex: 1 1 100%; width:100%; }
     }
   </style>
 </head>
@@ -172,9 +292,9 @@
       <section class="card hero-card">
         <div class="card-header">
           <div class="state-row">
-            <span class="state-chip" data-chip="dali" data-state="ok"><span class="dot"></span>DALI: <strong id="daliOk" data-bind="daliOkText">-</strong></span>
-            <span class="state-chip" data-state="ok">PLC level: <strong id="plcLevel" data-bind="plcLevel">-</strong></span>
-            <span class="state-chip" data-chip="light" data-state="warn">Light: <strong><span id="plcLight" data-bind="plcLight">-</span></strong> (0x<span id="plcLightHex" data-bind="plcLightHex">-</span>)</span>
+            <span class="state-chip" data-chip="dali" data-state="ok"><span class="dot"></span>DALI: <strong data-bind="daliOkText">-</strong></span>
+            <span class="state-chip" data-state="ok">PLC level: <strong data-bind="plcLevel">-</strong></span>
+            <span class="state-chip" data-chip="light" data-state="warn">Light: <strong><span data-bind="plcLight">-</span></strong> (0x<span data-bind="plcLightHex">-</span>)</span>
           </div>
         </div>
 
@@ -196,18 +316,73 @@
         </div>
 
         <div class="scene">
-          <img id="crane" src="crane.svg" alt="crane">
-          <img id="trolley" src="trolley.svg" alt="trolley">
-          <img id="container" src="container.svg" alt="container">
+          <!-- ONE merged SVG scene (crane + trolley + container) -->
+          <div class="scene-stage">
+            <svg id="sceneSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet" aria-label="crane scene">
+              <!-- Crane base -->
+              <g id="craneBase">
+                <rect x="0" y="0" width="1200" height="600" fill="#f5f7fa"/>
+
+                <!-- Ground -->
+                <rect x="0" y="380" width="1200" height="40" fill="#c9c9c9"/>
+
+                <!-- Sea -->
+                <rect x="0" y="420" width="1200" height="180" fill="#cfe8ff"/>
+
+                <!-- Crane legs -->
+                <rect x="220" y="120" width="40" height="300" fill="#1f8a4c"/>
+                <rect x="340" y="120" width="40" height="300" fill="#1f8a4c"/>
+
+                <!-- Crane beam -->
+                <rect x="220" y="120" width="700" height="40" fill="#1f8a4c"/>
+
+                <!-- Boom -->
+                <polygon points="920,120 1110,40 1150,80 960,160" fill="#1f8a4c"/>
+
+                <!-- Cabin -->
+                <rect x="200" y="160" width="90" height="60" fill="#3d3d3d"/>
+
+                <!-- Wheels -->
+                <circle cx="240" cy="420" r="20" fill="#555"/>
+                <circle cx="360" cy="420" r="20" fill="#555"/>
+              </g>
+
+              <!-- Trolley (placed into crane coordinates) -->
+              <!-- Base X/Y based on your original layout: left 42.5% and top 18% -->
+              <!-- Size based on your old CSS (approx 6% scene width) -->
+              <g id="trolleyGroup" transform="translate(474.00 108.00) scale(1.2000)">
+                <!-- Trolley body -->
+                <rect x="5" y="10" width="50" height="20" rx="4" fill="#444"/>
+                <!-- Wheels -->
+                <circle cx="15" cy="35" r="5" fill="#111"/>
+                <circle cx="45" cy="35" r="5" fill="#111"/>
+                <!-- Hanging cable -->
+                <line x1="30" y1="30" x2="30" y2="75" stroke="#222" stroke-width="3"/>
+              </g>
+
+              <!-- Container (placed into crane coordinates) -->
+              <!-- Base top = trolley top + 10% of scene height (~60px) -->
+              <!-- Size based on your old CSS (approx 7.5% scene width) -->
+              <g id="containerGroup" transform="translate(465.00 168.00) scale(1.1250)">
+                <!-- Container body -->
+                <rect x="5" y="5" width="70" height="40" rx="4" fill="#d35400"/>
+                <!-- Container ribs -->
+                <line x1="15" y1="5" x2="15" y2="45" stroke="#a84300" stroke-width="3"/>
+                <line x1="30" y1="5" x2="30" y2="45" stroke="#a84300" stroke-width="3"/>
+                <line x1="45" y1="5" x2="45" y2="45" stroke="#a84300" stroke-width="3"/>
+                <line x1="60" y1="5" x2="60" y2="45" stroke="#a84300" stroke-width="3"/>
+              </g>
+            </svg>
+          </div>
 
           <div class="hud">
             <div class="metric">
               <div class="metric-label">Hoist position</div>
-              <div class="metric-value" id="dispLevel" data-bind="dispLevel">—</div>
+              <div class="metric-value" data-bind="dispLevel">—</div>
             </div>
             <div class="metric">
               <div class="metric-label">Lighting output</div>
-              <div class="metric-value"><span id="dispLight" data-bind="dispLight">—</span> <small>(0x<span id="dispLightHex" data-bind="dispLightHex">—</span>)</small></div>
+              <div class="metric-value"><span data-bind="dispLight">—</span> <small>(0x<span data-bind="dispLightHex">—</span>)</small></div>
             </div>
           </div>
         </div>
@@ -275,9 +450,19 @@
     LIGHT_LEVEL: "/api/light",
   };
 
-  const TOP_PCT = 18;
-  const BOT_PCT = 62;
-  const CONTAINER_OFFSET_PCT = 10;
+  // These are now in SVG coordinates (viewBox 0..1200 x 0..600)
+  const SCENE_H = 600;
+
+  // Match your old percent-based intent:
+  const TOP_Y = 0.18 * SCENE_H;     // 18% of 600 = 108
+  const BOT_Y = 0.62 * SCENE_H;     // 62% of 600 = 372
+  const CONTAINER_OFFSET_Y = 0.10 * SCENE_H; // 10% of 600 = 60
+
+  // Fixed X placements from your old "left:42.5%" + sizes
+  const TROLLEY_LEFT_X = 474.00;
+  const CONTAINER_LEFT_X = 465.00;
+  const TROLLEY_SCALE = 1.2000;
+  const CONTAINER_SCALE = 1.1250;
 
   // slow view
   const DISPLAY_UNITS_PER_SEC = 8;  // smaller = slower
@@ -300,8 +485,9 @@
   const daliChips = document.querySelectorAll('[data-chip="dali"]');
   const lightChips = document.querySelectorAll('[data-chip="light"]');
 
-  const trolleyImg = document.getElementById("trolley");
-  const containerImg = document.getElementById("container");
+  // SVG groups (these move, everything stays aligned)
+  const trolleyGroup = document.getElementById("trolleyGroup");
+  const containerGroup = document.getElementById("containerGroup");
 
   const slider = document.getElementById("trolleySlider");
   const numberBox = document.getElementById("trolleyNumber");
@@ -339,14 +525,13 @@
   document.getElementById("trolleyOn").onclick = () => postNoBody(API.TROLLEY_ON).catch(e=>setStatus(e.message,true));
   document.getElementById("trolleyOff").onclick = () => postNoBody(API.TROLLEY_OFF).catch(e=>setStatus(e.message,true));
 
-  function levelToTopPct(level254){
-    const p = level254/254;
-    return TOP_PCT + p*(BOT_PCT-TOP_PCT);
-  }
   function applyVisual(level254){
-    const topPct = levelToTopPct(level254);
-    trolleyImg.style.top = `${topPct}%`;
-    containerImg.style.top = `${topPct + CONTAINER_OFFSET_PCT}%`;
+    const p = level254 / 254;
+    const trolleyY = TOP_Y + p * (BOT_Y - TOP_Y);
+    const containerY = trolleyY + CONTAINER_OFFSET_Y;
+
+    trolleyGroup.setAttribute("transform", `translate(${TROLLEY_LEFT_X} ${trolleyY.toFixed(2)}) scale(${TROLLEY_SCALE})`);
+    containerGroup.setAttribute("transform", `translate(${CONTAINER_LEFT_X} ${containerY.toFixed(2)}) scale(${CONTAINER_SCALE})`);
   }
 
   function syncControls(v){ slider.value=String(v); numberBox.value=String(v); }
@@ -395,7 +580,6 @@
       const lvl = clamp254(s.trolleyLevel254);
       const lit = clamp254(s.lightLevel254);
 
-      // targets from PLC
       if(lvl!==null) targetLevel = lvl;
       targetLight = (lit!==null) ? lit : targetLevel;
 
@@ -420,8 +604,7 @@
 
     // Freeze visuals if PLC says DALI is stalled
     if (!daliOk) {
-      const dl = clamp254(dispLevel) ?? 0;
-      applyVisual(dl);
+      applyVisual(clamp254(dispLevel) ?? 0);
       requestAnimationFrame(animate);
       return;
     }
