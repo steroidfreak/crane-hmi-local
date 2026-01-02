@@ -23,6 +23,7 @@ import {
   trolleyOff,
   trolleyOn,
 } from '../api/controls';
+import { CraneVisualizer } from './CraneVisualizer';
 
 interface DashboardProps {
   loading: boolean;
@@ -89,6 +90,10 @@ export function Dashboard({ loading, error }: DashboardProps) {
             </Stack>
           </CardContent>
         </Card>
+      </Grid>
+
+      <Grid item xs={12} md={8}>
+        <CraneVisualizer twin={twin} />
       </Grid>
 
       <Grid item xs={12} md={4}>
@@ -187,14 +192,16 @@ export function Dashboard({ loading, error }: DashboardProps) {
         </Card>
       </Grid>
 
-      <Snackbar
-        open={Boolean(toast)}
-        autoHideDuration={4000}
-        onClose={() => setToast(null)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        {toast && <Alert severity={toast.severity}>{toast.message}</Alert>}
-      </Snackbar>
+      {toast && (
+        <Snackbar
+          open
+          autoHideDuration={4000}
+          onClose={() => setToast(null)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity={toast.severity}>{toast.message}</Alert>
+        </Snackbar>
+      )}
     </Grid>
   );
 }

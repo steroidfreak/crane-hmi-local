@@ -1,17 +1,19 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": "./src",
-    "rootDir": "src",
+    "baseUrl": ".",
+    "rootDir": ".",
     "outDir": "dist",
     "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["vite/client"],
     "paths": {
       "@crane/common": ["../../libs/common/src"]
     }
   },
   "include": [
-    "src",
-    "vite.config.ts"
+    "src"
   ],
   "references": [
     { "path": "../../libs/common" }
