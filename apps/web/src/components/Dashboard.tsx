@@ -23,6 +23,7 @@ import {
   trolleyOff,
   trolleyOn,
 } from '../api/controls';
+import { CraneVisualizer } from './CraneVisualizer';
 
 interface DashboardProps {
   loading: boolean;
@@ -89,6 +90,10 @@ export function Dashboard({ loading, error }: DashboardProps) {
             </Stack>
           </CardContent>
         </Card>
+      </Grid>
+
+      <Grid item xs={12} md={8}>
+        <CraneVisualizer twin={twin} />
       </Grid>
 
       <Grid item xs={12} md={4}>
