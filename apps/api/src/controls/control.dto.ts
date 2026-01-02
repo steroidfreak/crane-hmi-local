@@ -1,8 +1,14 @@
-import { IsInt, Max, Min } from 'class-validator';
+import { IsIn, IsInt, Max, Min } from 'class-validator';
+import { TrolleySpeed } from '@crane/common';
 
 export class LevelDto {
   @IsInt()
   @Min(0)
   @Max(254)
   level254!: number;
+}
+
+export class TrolleySpeedDto {
+  @IsIn(['slow', 'medium', 'fast'])
+  speed!: TrolleySpeed;
 }
