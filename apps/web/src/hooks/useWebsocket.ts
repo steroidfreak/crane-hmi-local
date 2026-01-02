@@ -34,6 +34,8 @@ export function useWebsocket() {
       }
     });
 
-    return () => socket.disconnect();
+    return () => {
+      socket.disconnect();
+    };
   }, [token, setTwin, setWsConnected]);
 }
