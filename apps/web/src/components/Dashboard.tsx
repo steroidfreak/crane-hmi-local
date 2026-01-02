@@ -13,15 +13,17 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { LEVEL_MAX, LEVEL_MIN } from '@crane/common';
+import { LEVEL_MAX, LEVEL_MIN, TrolleySpeed } from '@crane/common';
 import { useAppStore } from '../state/store';
 import {
   boomOff,
   boomOn,
   setLightLevel,
   setTrolleyLevel,
+  setTrolleySpeed,
   trolleyOff,
   trolleyOn,
+  trolleyReset,
 } from '../api/controls';
 import { CraneVisualizer } from './CraneVisualizer';
 
@@ -84,6 +86,10 @@ export function Dashboard({ loading, error }: DashboardProps) {
                   size="small"
                 />
               </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="subtitle2">Speed</Typography>
+                <Chip label={twin.trolleySpeed.toUpperCase()} color="info" size="small" />
+              </Stack>
               <Typography variant="body2">Trolley Level: {twin.trolleyLevel254}</Typography>
               <Typography variant="body2">Light Level: {twin.lightLevel254}</Typography>
               <Typography variant="body2">DALI Health: {twin.daliOk ? 'OK' : 'Fault'}</Typography>
@@ -142,6 +148,27 @@ export function Dashboard({ loading, error }: DashboardProps) {
                 onClick={() => handleCommand(trolleyOff, 'Trolley off command sent')}
               >
                 Trolley Off
+              </Button>
+              <Stack direction="row" spacing={1}>
+                {(['slow', 'medium', 'fast'] as TrolleySpeed[]).map((speed) => (
+                  <Button
+                    key={speed}
+                    variant={twin.trolleySpeed === speed ? 'contained' : 'outlined'}
+                    color={twin.trolleySpeed === speed ? 'secondary' : 'inherit'}
+                    disabled={pending}
+                    onClick={() => handleCommand(() => setTrolleySpeed(speed), `Set trolley speed to ${speed}`)}
+                  >
+                    {speed.charAt(0).toUpperCase() + speed.slice(1)}
+                  </Button>
+                ))}
+              </Stack>
+              <Button
+                variant="outlined"
+                color="warning"
+                disabled={pending}
+                onClick={() => handleCommand(trolleyReset, 'Trolley reset command sent')}
+              >
+                Reset Trolley
               </Button>
             </Stack>
           </CardContent>

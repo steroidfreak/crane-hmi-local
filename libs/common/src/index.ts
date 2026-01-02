@@ -1,10 +1,12 @@
 export type SwitchState = 'on' | 'off' | 'unknown';
+export type TrolleySpeed = 'slow' | 'medium' | 'fast';
 
 export interface DigitalTwinState {
   boom: SwitchState;
   trolley: SwitchState;
   trolleyLevel254: number;
   lightLevel254: number;
+  trolleySpeed: TrolleySpeed;
   daliOk: boolean;
   raw?: Record<string, unknown> | null;
   ts: number | null;
@@ -15,6 +17,8 @@ export interface CommandResponse {
   error?: string;
   trolleyLevel254?: number;
   lightLevel254?: number;
+  trolleySpeed?: TrolleySpeed;
+  trolleyReset?: boolean;
 }
 
 export interface MqttCommand {
@@ -22,6 +26,8 @@ export interface MqttCommand {
   trolley?: 'on' | 'off';
   trolleyLevel254?: number;
   lightLevel254?: number;
+  trolleySpeed?: TrolleySpeed;
+  trolleyReset?: boolean;
 }
 
 export interface MqttStateMessage {
@@ -29,6 +35,8 @@ export interface MqttStateMessage {
   trolley?: SwitchState;
   trolleyLevel254?: number;
   lightLevel254?: number;
+  trolleySpeed?: TrolleySpeed;
+  trolleyReset?: boolean;
   daliOk?: boolean;
   [key: string]: unknown;
 }
@@ -67,6 +75,7 @@ export const DEFAULT_DIGITAL_TWIN: DigitalTwinState = {
   trolley: 'unknown',
   trolleyLevel254: 0,
   lightLevel254: 0,
+  trolleySpeed: 'slow',
   daliOk: true,
   raw: null,
   ts: null,

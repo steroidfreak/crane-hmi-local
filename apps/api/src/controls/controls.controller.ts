@@ -1,7 +1,7 @@
-import { Body, Controller, HttpException, HttpStatus, InternalServerErrorException, Post } from '@nestjs/common';
+import { Body, Controller, HttpException, InternalServerErrorException, Post } from '@nestjs/common';
 import { CommandResponse, MqttCommand } from '@crane/common';
 import { MqttService } from '../mqtt/mqtt.service';
-import { LevelDto } from './control.dto';
+import { LevelDto, TrolleySpeedDto } from './control.dto';
 
 @Controller()
 export class ControlsController {
@@ -35,6 +35,16 @@ export class ControlsController {
   @Post('light')
   async lightLevel(@Body() dto: LevelDto): Promise<CommandResponse> {
     return this.publishAndAck({ lightLevel254: dto.level254 }, { lightLevel254: dto.level254 });
+  }
+
+  @Post('trolley/speed')
+  async trolleySpeed(@Body() dto: TrolleySpeedDto): Promise<CommandResponse> {
+    return this.publishAndAck({ trolleySpeed: dto.speed }, { trolleySpeed: dto.speed });
+  }
+
+  @Post('trolley/reset')
+  async trolleyReset(): Promise<CommandResponse> {
+    return this.publishAndAck({ trolleyReset: true }, { trolleyReset: true, trolleySpeed: 'slow', trolleyLevel254: 0 });
   }
 
   private async publishAndAck(command: MqttCommand, response?: Partial<CommandResponse>): Promise<CommandResponse> {

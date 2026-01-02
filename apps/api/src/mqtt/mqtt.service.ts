@@ -11,6 +11,7 @@ import {
   LEVEL_MIN,
   MqttCommand,
   MqttStateMessage,
+  TrolleySpeed,
 } from '@crane/common';
 
 @Injectable()
@@ -75,7 +76,7 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
     await this.commandClient.close();
     await new Promise<void>((resolve) => {
       if (this.connection) {
-        this.connection.end(true, {}, resolve);
+        this.connection.end(true, {}, () => resolve());
       } else {
         resolve();
       }
@@ -91,12 +92,14 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
     const current = this.state$.getValue();
     const trolleyLevel = this.clampLevel(message.trolleyLevel254);
     const lightLevel = this.clampLevel(message.lightLevel254);
+    const trolleySpeed = this.validateSpeed(message.trolleySpeed);
 
     const next: DigitalTwinState = {
       boom: message.boom ?? current.boom,
       trolley: message.trolley ?? current.trolley,
       trolleyLevel254: trolleyLevel ?? current.trolleyLevel254,
       lightLevel254: lightLevel ?? current.lightLevel254,
+      trolleySpeed: trolleySpeed ?? current.trolleySpeed,
       daliOk: typeof message.daliOk === 'boolean' ? message.daliOk : current.daliOk,
       raw: message,
       ts: Date.now(),
@@ -128,5 +131,11 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
     const numeric = Math.round(Number(value));
     if (!Number.isFinite(numeric)) return null;
     return Math.max(LEVEL_MIN, Math.min(LEVEL_MAX, numeric));
+  }
+
+  private validateSpeed(value?: TrolleySpeed | string): TrolleySpeed | null {
+    if (!value) return null;
+    if (value === 'slow' || value === 'medium' || value === 'fast') return value;
+    return null;
   }
 }
