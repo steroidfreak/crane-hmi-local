@@ -6,18 +6,22 @@ import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
+    // ConfigModule isGlobal is already set in AppModule, but importing here is OK and explicit
     ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET', 'changeme'),
-        signOptions: { expiresIn: config.get<string>('JWT_EXPIRES_IN', '1d') },
+        signOptions: {
+          expiresIn: config.get<string>('JWT_EXPIRES_IN', '1d'),
+        },
       }),
     }),
   ],
   providers: [AuthService],
   controllers: [AuthController],
-  exports: [AuthService],
+  // ✅ IMPORTANT: export JwtModule so JwtService is available to the global guard (APP_GUARD)
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

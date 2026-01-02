@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "lint": "echo \"Add linting with ESLint\""
-  },
+"scripts": {
+  "predev": "npm run build --workspace libs/common",
+  "dev": "vite",
+  "prebuild": "npm run build --workspace libs/common",
+  "build": "tsc -b && vite build",
+  "preview": "vite preview",
+  "lint": "echo \"Add linting with ESLint\""
+},
   "dependencies": {
     "@crane/common": "1.0.0",
     "@emotion/react": "^11.13.3",
