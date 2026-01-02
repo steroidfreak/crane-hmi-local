@@ -1,2 +1,16 @@
-node_modules/
+node_modules
+dist
+.turbo
+.tsbuildinfo
 .env
+.env.local
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+apps/web/node_modules
+apps/web/dist
+apps/api/node_modules
+apps/api/dist
+libs/common/dist
+.DS_Store

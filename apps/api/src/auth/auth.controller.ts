@@ -1,0 +1,16 @@
+import { Body, Controller, Post } from '@nestjs/common';
+import { LoginRequest, LoginResponse } from '@crane/common';
+import { AuthService } from './auth.service';
+import { Public } from './public.decorator';
+import { LoginDto } from './login.dto';
+
+@Controller('auth')
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
+  @Public()
+  @Post('login')
+  login(@Body() dto: LoginDto): Promise<LoginResponse> {
+    return this.authService.login(dto.username, dto.password);
+  }
+}
