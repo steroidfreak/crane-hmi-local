@@ -29,6 +29,7 @@ export function CraneVisualizer({ twin }: CraneVisualizerProps) {
   const legXLeft = 94;
   const legXRight = legXLeft + legSpacing;
 
+  const trolleyCenterX = legXRight + 60;
   const trolleyX = legXRight + 60;
   const trolleyWidth = 48;
   const trolleyHeight = 18;
@@ -90,6 +91,7 @@ export function CraneVisualizer({ twin }: CraneVisualizerProps) {
               background:
                 'radial-gradient(circle at 20% 10%, rgba(144,202,249,0.18), transparent 35%), radial-gradient(circle at 80% 0%, rgba(102,187,106,0.12), transparent 35%), linear-gradient(180deg, #0f2027 0%, #102a32 50%, #0b1b1f 100%)',
             }}
+          >
           
             <svg viewBox={`0 0 ${sceneWidth} ${sceneHeight}`} role="img" aria-labelledby="crane-visual-title" width="100%" height="100%">
               <title id="crane-visual-title">Crane trolley and container visualization</title>
@@ -120,6 +122,7 @@ export function CraneVisualizer({ twin }: CraneVisualizerProps) {
 
               <g filter={lightLevel > 0 ? `drop-shadow(0 0 ${glowRadius}px rgba(144,202,249,0.35))` : undefined}>
                 <rect
+                  x={trolleyCenterX - trolleyWidth / 2}
                   x={trolleyX - trolleyWidth / 2}
                   y={boomY - 4}
                   width={trolleyWidth}
@@ -129,6 +132,47 @@ export function CraneVisualizer({ twin }: CraneVisualizerProps) {
                   stroke="#2f2f2f"
                   strokeWidth={2}
                 />
+                <circle cx={trolleyCenterX - 10} cy={boomY + boomThickness + 4} r={5} fill="#2b2b2b" />
+                <circle cx={trolleyCenterX + 10} cy={boomY + boomThickness + 4} r={5} fill="#2b2b2b" />
+              </g>
+
+              <line
+                x1={trolleyCenterX}
+                y1={boomY + boomThickness + 6}
+                x2={trolleyCenterX}
+                y2={hookY}
+                stroke="#1f1f1f"
+                strokeWidth={6}
+                strokeLinecap="round"
+              />
+              <line
+                x1={trolleyCenterX - 12}
+                y1={boomY + boomThickness + 6}
+                x2={trolleyCenterX - 12}
+                y2={hookY - 4}
+                stroke="#1f1f1f"
+                strokeWidth={4}
+                strokeLinecap="round"
+              />
+              <line
+                x1={trolleyCenterX + 12}
+                y1={boomY + boomThickness + 6}
+                x2={trolleyCenterX + 12}
+                y2={hookY - 4}
+                stroke="#1f1f1f"
+                strokeWidth={4}
+                strokeLinecap="round"
+              />
+
+              <rect x={trolleyCenterX - 42} y={containerY} width={84} height={38} rx={4} fill="#d66600" stroke="#a64b00" strokeWidth={3} />
+              <rect x={trolleyCenterX - 42} y={containerY} width={84} height={10} fill="#c85b00" />
+              <line x1={trolleyCenterX - 30} y1={containerY} x2={trolleyCenterX - 30} y2={containerY + 38} stroke="#a64b00" strokeWidth={3} />
+              <line x1={trolleyCenterX} y1={containerY} x2={trolleyCenterX} y2={containerY + 38} stroke="#a64b00" strokeWidth={3} />
+              <line x1={trolleyCenterX + 30} y1={containerY} x2={trolleyCenterX + 30} y2={containerY + 38} stroke="#a64b00" strokeWidth={3} />
+
+              <rect x="0" y={sceneHeight - 20} width={sceneWidth} height="20" fill="#0c1417" opacity="0.9" />
+              <text x="12" y={sceneHeight - 6} fill="#90a4ae" fontSize="12">Trolley Level {trolleyLevel}</text>
+              <text x={sceneWidth - 120} y={sceneHeight - 6} fill="#90a4ae" fontSize="12" textAnchor="start">Light Level {lightLevel}</text>
                 <circle cx={trolleyX - 10} cy={boomY + boomThickness + 4} r={5} fill="#2b2b2b" />
                 <circle cx={trolleyX + 10} cy={boomY + boomThickness + 4} r={5} fill="#2b2b2b" />
               </g>
