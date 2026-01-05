@@ -16,3 +16,6 @@ export const setLightLevel = (level254: number) =>
 
 export const setTrolleySpeed = (speed: TrolleySpeed) =>
   apiClient.post<CommandResponse>('/trolley/speed', { speed }).then((r) => r.data);
+
+export const setControlMode = (mode: 'quay' | 'manual') =>
+  apiClient.post<CommandResponse>('/control-mode', { mode }).then((r) => r.data);

@@ -11,6 +11,8 @@ import {
   Slider,
   Snackbar,
   Stack,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from '@mui/material';
 import { LEVEL_MAX, LEVEL_MIN, TrolleySpeed } from '@crane/common';
@@ -21,6 +23,7 @@ import {
   setLightLevel,
   setTrolleyLevel,
   setTrolleySpeed,
+  setControlMode,
   trolleyOff,
   trolleyOn,
   trolleyReset,
@@ -62,6 +65,9 @@ export function Dashboard({ loading, error }: DashboardProps) {
   const handleLightLevelCommit = (value: number) =>
     handleCommand(() => setLightLevel(value), `Set light level to ${value}`);
 
+  const handleControlModeChange = (mode: 'quay' | 'manual') =>
+    handleCommand(() => setControlMode(mode), `Switched to ${mode === 'quay' ? 'Quay crane' : 'Manual'} mode`);
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -90,6 +96,14 @@ export function Dashboard({ loading, error }: DashboardProps) {
                 <Typography variant="subtitle2">Speed</Typography>
                 <Chip label={twin.trolleySpeed.toUpperCase()} color="info" size="small" />
               </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="subtitle2">Mode</Typography>
+                <Chip
+                  label={twin.controlMode === 'quay' ? 'Quay Crane' : 'Manual'}
+                  color={twin.controlMode === 'quay' ? 'secondary' : 'default'}
+                  size="small"
+                />
+              </Stack>
               <Typography variant="body2">Trolley Level: {twin.trolleyLevel254}</Typography>
               <Typography variant="body2">Light Level: {twin.lightLevel254}</Typography>
               <Typography variant="body2">DALI Health: {twin.daliOk ? 'OK' : 'Fault'}</Typography>
@@ -100,6 +114,28 @@ export function Dashboard({ loading, error }: DashboardProps) {
 
       <Grid item xs={12} md={8}>
         <CraneVisualizer twin={twin} />
+      </Grid>
+
+      <Grid item xs={12} md={4}>
+        <Card>
+          <CardHeader title="Control Mode" subheader="Select operation mode" />
+          <CardContent>
+            <ToggleButtonGroup
+              value={twin.controlMode}
+              exclusive
+              fullWidth
+              onChange={(_, value) => value && handleControlModeChange(value)}
+              color="primary"
+            >
+              <ToggleButton value="quay" disabled={pending}>
+                Quay Crane Control
+              </ToggleButton>
+              <ToggleButton value="manual" disabled={pending}>
+                Manual Mode
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </CardContent>
+        </Card>
       </Grid>
 
       <Grid item xs={12} md={4}>
