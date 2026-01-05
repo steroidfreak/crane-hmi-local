@@ -18,6 +18,7 @@ export class ControlModeDto {
   mode!: ControlMode;
 }
 
+
 export class AddressDto {
   @IsInt()
   @Min(0)
@@ -31,3 +32,4 @@ export class AddressLevelDto extends AddressDto {
   @Max(254)
   level254!: number;
 }
+

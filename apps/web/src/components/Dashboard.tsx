@@ -13,6 +13,8 @@ import {
   Slider,
   Snackbar,
   Stack,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from '@mui/material';
 import { LEVEL_MAX, LEVEL_MIN, TrolleySpeed } from '@crane/common';
@@ -23,9 +25,13 @@ import {
   setLightLevel,
   setTrolleyLevel,
   setTrolleySpeed,
+
   addressLevel,
   addressOff,
   addressOn,
+
+  setControlMode,
+
   trolleyOff,
   trolleyOn,
   trolleyReset,
@@ -72,6 +78,8 @@ export function Dashboard({ loading, error }: DashboardProps) {
 
   const handleAddressLevelCommit = () =>
     handleCommand(() => addressLevel(manualAddress, manualLevel), `Set address ${manualAddress} level to ${manualLevel}`);
+  const handleControlModeChange = (mode: 'quay' | 'manual') =>
+    handleCommand(() => setControlMode(mode), `Switched to ${mode === 'quay' ? 'Quay crane' : 'Manual'} mode`);
 
   return (
     <>
@@ -90,6 +98,42 @@ export function Dashboard({ loading, error }: DashboardProps) {
           {error && <Alert severity="error">{error}</Alert>}
           {loading && <Alert severity="info">Loading current state…</Alert>}
         </Grid>
+      <Grid item xs={12} md={4}>
+        <Card>
+          <CardHeader title="Status" subheader="Live crane lighting telemetry" />
+          <CardContent>
+            <Stack spacing={2}>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="subtitle2">Boom</Typography>
+                <Chip label={twin.boom.toUpperCase()} color={twin.boom === 'on' ? 'success' : 'default'} size="small" />
+              </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="subtitle2">Trolley</Typography>
+                <Chip
+                  label={twin.trolley.toUpperCase()}
+                  color={twin.trolley === 'on' ? 'success' : 'default'}
+                  size="small"
+                />
+              </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="subtitle2">Speed</Typography>
+                <Chip label={twin.trolleySpeed.toUpperCase()} color="info" size="small" />
+              </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="subtitle2">Mode</Typography>
+                <Chip
+                  label={twin.controlMode === 'quay' ? 'Quay Crane' : 'Manual'}
+                  color={twin.controlMode === 'quay' ? 'secondary' : 'default'}
+                  size="small"
+                />
+              </Stack>
+              <Typography variant="body2">Trolley Level: {twin.trolleyLevel254}</Typography>
+              <Typography variant="body2">Light Level: {twin.lightLevel254}</Typography>
+              <Typography variant="body2">DALI Health: {twin.daliOk ? 'OK' : 'Fault'}</Typography>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Grid>
 
         {manualTab === 'quay' ? (
           <>
@@ -125,6 +169,53 @@ export function Dashboard({ loading, error }: DashboardProps) {
             <Grid item xs={12} md={8}>
               <CraneVisualizer twin={twin} />
             </Grid>
+      <Grid item xs={12} md={4}>
+        <Card>
+          <CardHeader title="Control Mode" subheader="Select operation mode" />
+          <CardContent>
+            <ToggleButtonGroup
+              value={twin.controlMode}
+              exclusive
+              fullWidth
+              onChange={(_, value) => value && handleControlModeChange(value)}
+              color="primary"
+            >
+              <ToggleButton value="quay" disabled={pending}>
+                Quay Crane Control
+              </ToggleButton>
+              <ToggleButton value="manual" disabled={pending}>
+                Manual Mode
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12} md={4}>
+        <Card>
+          <CardHeader title="Boom" subheader="Power the crane boom lighting" />
+          <CardContent>
+            <Stack spacing={2}>
+              <Button
+                variant="contained"
+                color="success"
+                disabled={pending}
+                onClick={() => handleCommand(boomOn, 'Boom on command sent')}
+              >
+                Boom On
+              </Button>
+              <Button
+                variant="outlined"
+                color="inherit"
+                disabled={pending}
+                onClick={() => handleCommand(boomOff, 'Boom off command sent')}
+              >
+                Boom Off
+              </Button>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Grid>
 
             <Grid item xs={12} md={4}>
               <Card>

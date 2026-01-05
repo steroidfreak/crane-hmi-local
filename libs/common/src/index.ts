@@ -21,8 +21,10 @@ export interface CommandResponse {
   lightLevel254?: number;
   trolleySpeed?: TrolleySpeed;
   controlMode?: ControlMode;
+
   address?: number;
   addressLevel254?: number;
+
   trolleyReset?: boolean;
 }
 
