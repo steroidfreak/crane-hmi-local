@@ -17,3 +17,19 @@ export class ControlModeDto {
   @IsIn(['quay', 'manual'])
   mode!: ControlMode;
 }
+
+
+export class AddressDto {
+  @IsInt()
+  @Min(0)
+  @Max(63)
+  address!: number;
+}
+
+export class AddressLevelDto extends AddressDto {
+  @IsInt()
+  @Min(0)
+  @Max(254)
+  level254!: number;
+}
+

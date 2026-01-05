@@ -21,16 +21,22 @@ export interface CommandResponse {
   lightLevel254?: number;
   trolleySpeed?: TrolleySpeed;
   controlMode?: ControlMode;
+
+  address?: number;
+  addressLevel254?: number;
+
   trolleyReset?: boolean;
 }
 
 export interface MqttCommand {
-  cmd?: 'on' | 'off';
+  cmd?: 'on' | 'off' | 'level';
   trolley?: 'on' | 'off';
   trolleyLevel254?: number;
   lightLevel254?: number;
   trolleySpeed?: TrolleySpeed;
   controlMode?: ControlMode;
+  address?: number;
+  val?: number;
   trolleyReset?: boolean;
 }
 
