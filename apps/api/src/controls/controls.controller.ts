@@ -1,7 +1,7 @@
 import { Body, Controller, HttpException, InternalServerErrorException, Post } from '@nestjs/common';
 import { CommandResponse, MqttCommand } from '@crane/common';
 import { MqttService } from '../mqtt/mqtt.service';
-import { LevelDto, TrolleySpeedDto } from './control.dto';
+import { AddressDto, AddressLevelDto, ControlModeDto, LevelDto, TrolleySpeedDto } from './control.dto';
 
 @Controller()
 export class ControlsController {
@@ -45,6 +45,26 @@ export class ControlsController {
   @Post('trolley/reset')
   async trolleyReset(): Promise<CommandResponse> {
     return this.publishAndAck({ trolleyReset: true }, { trolleyReset: true, trolleySpeed: 'slow', trolleyLevel254: 0 });
+  }
+
+  @Post('control-mode')
+  async controlMode(@Body() dto: ControlModeDto): Promise<CommandResponse> {
+    return this.publishAndAck({ controlMode: dto.mode }, { controlMode: dto.mode });
+  }
+
+  @Post('address/on')
+  async addressOn(@Body() dto: AddressDto): Promise<CommandResponse> {
+    return this.publishAndAck({ address: dto.address, cmd: 'on' }, { address: dto.address });
+  }
+
+  @Post('address/off')
+  async addressOff(@Body() dto: AddressDto): Promise<CommandResponse> {
+    return this.publishAndAck({ address: dto.address, cmd: 'off' }, { address: dto.address });
+  }
+
+  @Post('address/level')
+  async addressLevel(@Body() dto: AddressLevelDto): Promise<CommandResponse> {
+    return this.publishAndAck({ address: dto.address, cmd: 'level', val: dto.level254 }, { address: dto.address, addressLevel254: dto.level254 });
   }
 
   private async publishAndAck(command: MqttCommand, response?: Partial<CommandResponse>): Promise<CommandResponse> {
