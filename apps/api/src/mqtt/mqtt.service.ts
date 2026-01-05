@@ -12,6 +12,7 @@ import {
   MqttCommand,
   MqttStateMessage,
   TrolleySpeed,
+  ControlMode,
 } from '@crane/common';
 
 @Injectable()
@@ -93,6 +94,7 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
     const trolleyLevel = this.clampLevel(message.trolleyLevel254);
     const lightLevel = this.clampLevel(message.lightLevel254);
     const trolleySpeed = this.validateSpeed(message.trolleySpeed);
+    const controlMode = this.validateControlMode(message.controlMode);
 
     const next: DigitalTwinState = {
       boom: message.boom ?? current.boom,
@@ -100,6 +102,7 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
       trolleyLevel254: trolleyLevel ?? current.trolleyLevel254,
       lightLevel254: lightLevel ?? current.lightLevel254,
       trolleySpeed: trolleySpeed ?? current.trolleySpeed,
+      controlMode: controlMode ?? current.controlMode,
       daliOk: typeof message.daliOk === 'boolean' ? message.daliOk : current.daliOk,
       raw: message,
       ts: Date.now(),
@@ -136,6 +139,12 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
   private validateSpeed(value?: TrolleySpeed | string): TrolleySpeed | null {
     if (!value) return null;
     if (value === 'slow' || value === 'medium' || value === 'fast') return value;
+    return null;
+  }
+
+  private validateControlMode(value?: ControlMode | string): ControlMode | null {
+    if (!value) return null;
+    if (value === 'quay' || value === 'manual') return value;
     return null;
   }
 }
